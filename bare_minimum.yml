@@ -1,0 +1,41 @@
+- hosts: all
+  gather_facts: True
+  remote_user: root
+
+  tasks:
+    - name: update cache
+      apt:
+        update_cache: yes
+
+    - name: install packages
+      ansible.builtin.package:
+        state: present
+        name:
+          - vim
+          - git
+          - tmux
+          - zsh
+          - curl
+          - wget
+          - tree
+          - tig
+          - tmux
+          - zsh
+          - fish
+          - iftop
+          - htop
+          - screen
+          - lnav
+          - ncdu
+          - mtr
+          - net-tools
+          - apt-transport-https
+          - ca-certificates
+          - software-properties-common
+          - bat
+
+    - name: set hostname
+      hostname:
+        name: "{{inventory_hostname}}"
+
+- import_playbook: userconfig.yml
