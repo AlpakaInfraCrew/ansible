@@ -1,23 +1,23 @@
-[all]
+[all:children]
 locations
 functions
 
 [locations:children]
-DE-FSN
-DE-NBG
-DE-FBG
-FI-HEL
+DE_FSN
+DE_NBG
+DE_FBG
+FI_HEL
 
-[DE-FSN]
+[DE_FSN]
 patrull ansible_host=2a01:4f8:c013:24ac::1
 
-[DE-NBG]
+[DE_NBG]
 tossig ansible_host=2a01:4f8:c0c:632e::1
 
-[FI-HEL]
+[FI_HEL]
 lilleplutt ansible_host=2a01:4f9:c012:cb47::1
 
-[DE-FBG]
+[DE_FBG]
 alpaka.social ansible_host=2a0f:7cc7:7cc7:7c40::182
 
 [functions:children]
@@ -26,14 +26,14 @@ monitoring
 backup
 mgmt
 bbb
-bbb-front
+bbb_front
 survey
 pretalx
 presign
 nextcloud
 gitlab
-gitlab-runner
-gitlab-pages
+gitlab_runner
+gitlab_pages
 zammad
 hedgedoc
 docker
@@ -57,7 +57,7 @@ tossig
 [bbb]
 
 
-[bbb-front]
+[bbb_front]
 
 [survey]
 
@@ -69,9 +69,9 @@ tossig
 
 [gitlab]
 
-[gitlab-runner]
+[gitlab_runner]
 
-[gitlab-pages]
+[gitlab_pages]
 
 [zammad]
 
