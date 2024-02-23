@@ -1,0 +1,53 @@
+[all]
+locations
+functions
+
+[locations:children]
+DE-FSN
+DE-NBG
+DE-FBG
+FI-HEL
+
+[DE-FSN]
+patrull ansible_host=2a01:4f8:c013:24ac::1
+
+[DE-NBG]
+tossig ansible_host=2a01:4f8:c0c:632e::1
+
+[FI-HEL]
+lilleplutt ansible_host=2a01:4f9:c012:cb47::1
+
+[DE-FBG]
+alpaka.social ansible_host=2a0f:7cc7:7cc7:7c40::182
+
+[functions:children]
+auth
+monitoring
+backup
+mgmt
+bbb
+bbb-front
+survey
+pretalx
+presign
+nextcloud
+gitlab
+gitlab-runner
+gitlab-pages
+zammad
+hedgedoc
+docker
+collabora
+mastodon
+
+[monitoring]
+lilleplutt
+
+[auth]
+patrull
+
+[mastodon]
+alpaka.social
+
+[backup]
+tossig
