@@ -10,7 +10,6 @@ all_users:
         update_password: always
         ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBh9aUbLzxXjgRNSolu/P/WNXQoYtcAcTFeFTFUqH7zr thies"
         shell: /bin/zsh
-        basic_auth: $6$QV/D8VFsccO9Cp/Y$6O3apu2Ycq9rQ3IPpER4PNaVuS02z3T8qW.cH619qjAUf/ZR.AoWtSiIXsdsZJ16ECJ8o2rNXcyOFCXVO4E3y0
     strifel:
         login: strifel
         name: strifel
