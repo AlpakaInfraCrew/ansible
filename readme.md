@@ -12,7 +12,7 @@
 
 ## Add Keys
 1. edit `roles/user/vars/all_users.yml`
-2. add to `userconfig.yml`
+2. **add to `userconfig.yml`**
 3. Create a PR
 4. Add someone who already is in `userconfig.yml` to the reviewers.
 5. Wait until someone rolls out your user
