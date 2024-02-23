@@ -1,2 +1,3 @@
 venv/
 password_file
+.envrc

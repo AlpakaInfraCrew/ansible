@@ -4,6 +4,7 @@
   - Option 1: Creating venv, and installing with pip install -r requirements.txt
 2. `ansible-galaxy install -r requirements.yml --force-with-deps --force`
 3. Creating `password_file` with ansible-secret password
+4. You can add an `.envrc` with the `AIC_USER` variable to your username
 
 ## Structure
 - `roles` contains custom roles
