@@ -1,0 +1,9 @@
+- hosts: all
+  gather_facts: True
+  vars_files:
+    - "roles/user/vars/all_users.yml"
+  vars:
+    users:
+     - "{{all_users.thies}}"
+  roles:
+    - role: user
