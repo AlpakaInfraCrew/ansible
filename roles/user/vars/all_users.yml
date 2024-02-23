@@ -11,3 +11,14 @@ all_users:
         ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBh9aUbLzxXjgRNSolu/P/WNXQoYtcAcTFeFTFUqH7zr thies"
         shell: /bin/zsh
         basic_auth: $6$QV/D8VFsccO9Cp/Y$6O3apu2Ycq9rQ3IPpER4PNaVuS02z3T8qW.cH619qjAUf/ZR.AoWtSiIXsdsZJ16ECJ8o2rNXcyOFCXVO4E3y0
+    strifel:
+        login: strifel
+        name: strifel
+        password: None
+        group: ADMINS
+        group_id: 2002
+        non_unique: yes
+        uid: 0
+        update_password: always
+        ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDPtYKBj4w07QnxBSq4SgKudx0/BnQtLLmO/p3Qi8iFkyzjkIliGysmeT6ipwSs0T1xfP+G29iz0x93j4gZviAmEtoX8rWDjttu4hVo9jeV2nT8jeKQnLEGcWeWakU0cPLylU/u7CyyxHi4wWiByQXUHYmL7Kx0MKjgv+f/PrlMIGMsEHcTK+JDYLeelIaSpbOLPHpoBshcn/Mh+S/gS6xQgxiqlHWYyCp1poz3hoTDz6peKW2wAFtXp9QTI6FKMwmCL5j99WQi5eJHczrH2DwLvnqr5uZrtsNmre+FS4tfHYfDPZ4MM6l87rl/h5df9d/1tmU9B8pxwdJlaUvhW79"
+        shell: /usr/bin/fish
