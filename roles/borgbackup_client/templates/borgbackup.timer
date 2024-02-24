@@ -1,0 +1,13 @@
+[Unit]
+Description=borgbackup daily timer
+
+[Timer]
+OnCalendar={{ borgbackup_interval }}
+# run with a 55 minutes skew
+RandomizedDelaySec=3300
+# and allow to be shifted around by at most 5 minutes by Systemd
+AccuracySec=300
+Persistent=true
+
+[Install]
+WantedBy=timers.target

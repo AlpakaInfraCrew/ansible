@@ -1,0 +1,15 @@
+[Unit]
+Description=Borgbackup weekly check timer
+
+[Timer]
+# Run every sunday
+OnCalendar=Sun
+# with 24 hours skew
+RandomizedDelaySec=86400
+# and allow to be shifted around by at most 5 minutes by Systemd
+AccuracySec=300
+#do not immediately start after missed timer
+Persistent=false
+
+[Install]
+WantedBy=timers.target

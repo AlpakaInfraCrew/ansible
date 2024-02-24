@@ -1,0 +1,14 @@
+---
+- name: Enable borgmatic timer
+  ansible.builtin.systemd:
+    name: borgbackup.timer
+    enabled: true
+    daemon-reload: true
+    state: restarted
+
+- name: Enable borgmatic-check timer
+  ansible.builtin.systemd:
+    name: borgbackup-check.timer
+    enabled: true
+    daemon-reload: true
+    state: restarted

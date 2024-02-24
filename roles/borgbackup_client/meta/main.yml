@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: Fachschaft Informatik, TU Dortmund with various changes by Alapaka Infra Crew
+  description: Configure and enable borgbackup to work with a Hetzner Storage Space
+  license: MIT
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Debian
+      versions:
+        - all

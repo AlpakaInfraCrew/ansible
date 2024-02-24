@@ -1,0 +1,33 @@
+---
+borgbackup_target_group: borgbackup
+borgbackup_target_user: borgbackup
+borgbackup_compression: "zstd"
+borgbackup_exclude_dirs:
+  - sh:/home/*/.gvfs
+  - sh:/home/*/.cache
+
+  # Rust artefacts
+  - sh:/home/*/.cargo
+  - sh:/home/*/.rustup
+
+  # Node stuff
+  - sh:/home/*/**/node_modules
+  - sh:/home/*/**/bower_components
+
+  # Miscellaneous
+  - lost+found
+
+borgbackup_pool: "/home/borg"
+borgbackup_repo_path: "./{{ ansible_hostname }}"
+borgbackup_keep_within: 7d
+borgbackup_keep_daily: 21
+borgbackup_keep_weekly: 8
+borgbackup_keep_monthly: 6
+borgbackup_keep_yearly: 1
+borgbackup_interval: "hourly"
+borgbackup_chunker_params: "19,23,21,4095"
+borgbackup_mariadb_enable: false
+borgbackup_extra_borg_options: []
+borgbackup_enable_encryption: true
+borgbackup_target_port: 22
+borgbackup_target_is_storagebox: false
