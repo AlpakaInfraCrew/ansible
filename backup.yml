@@ -1,0 +1,28 @@
+---
+- hosts: backup
+  tasks:
+  - name: Install sshfs
+    ansible.builtin.apt:
+      pkg:
+      - sshfs
+  - name: Generate SSH key
+    ansible.builtin.user:
+      name: root
+      generate_ssh_key: true
+      ssh_key_type: ed25519
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /home/borg
+      state: directory
+      mode: '0755'
+  - name: Adding fstab entry for borg remote mount point
+    mount:
+      path: /home/borg
+      src: "{{ borg_storage_box }}"
+      fstype: fuse.sshfs
+      opts: "defaults,allow_other,_netdev,idmap=user,follow_symlinks,identityfile=/root/.ssh/id_ed25519,allow_other,default_permissions,uid=0,gid=0,port=23"
+      state: mounted
+
+- hosts: all:!backup
+  roles:
+  - borgbackup_client

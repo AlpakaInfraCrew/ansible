@@ -1,0 +1,98 @@
+---
+- name: Install borg  # noqa package-latest
+  ansible.builtin.apt:
+    name:
+      - borgmatic
+      - python3-pyfuse3
+    state: latest
+
+- name: Generate SSH key
+  ansible.builtin.user:
+    name: root
+    generate_ssh_key: true
+    ssh_key_type: ed25519
+
+- name: Get public key
+  ansible.builtin.command: "cat /root/.ssh/id_ed25519.pub"
+  register: hostkey
+  changed_when: false
+
+- name: Create Repo on backup target
+  ansible.builtin.import_tasks: onserver.yml
+  vars:
+    borgbackup_source_key: "{{ hostkey.stdout }}"
+    borgbackup_source_host: "{{ ansible_hostname }}"
+  delegate_to: "{{ borgbackup_target_host }}"
+
+- name: Check if Repo already exists
+  ansible.builtin.stat:
+    path: "{{ hostvars[borgbackup_target_host]['borgbackup_pool'] | default(borgbackup_pool) }}/{{ borgbackup_repo_path }}/config"
+  register: repo
+  delegate_to: "{{ borgbackup_target_host }}"
+
+- name: Gather facts for backup target
+  ansible.builtin.setup:
+  delegate_to: "{{ borgbackup_target_host }}"
+  delegate_facts: true
+  when: hostvars[borgbackup_target_host]['ansible_default_ipv4'] is not defined
+
+- name: Set target IP
+  ansible.builtin.set_fact:
+    borgbackup_target_ip: "{{ borgbackup_target_ip | default(hostvars[borgbackup_target_host]['ansible_default_ipv4']['address'], true) }}"
+
+- name: Create Borg Repo
+  ansible.builtin.command: "borg init -e repokey {{ borgbackup_target_user }}@{{ borgbackup_target_ip }}:{{ hostvars[borgbackup_target_host]['borgbackup_pool'] | default(borgbackup_pool) }}/{{ borgbackup_repo_path }}"
+  environment:
+    BORG_PASSPHRASE: "{{ borgbackup_enable_encryption | ternary(borgbackup_key, '') }}"
+    BORG_RSH: "ssh -o 'StrictHostKeyChecking=accept-new' -p {{ borgbackup_target_port }}"
+  when: not repo.stat.exists
+
+- name: Create borgmatic config folder
+  ansible.builtin.file:
+    path: /etc/borgmatic
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: Copy borgmatic config
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: /etc/borgmatic/config.yaml
+    mode: 0600
+
+- name: Add borgbackup service
+  ansible.builtin.copy:
+    src: "borgbackup.service"
+    dest: "/etc/systemd/system/borgbackup.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: Enable borgmatic timer
+
+- name: Add borgbackup timer
+  ansible.builtin.template:
+    src: "borgbackup.timer"
+    dest: "/etc/systemd/system/borgbackup.timer"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: Enable borgmatic timer
+
+- name: Add borgbackup-check service
+  ansible.builtin.copy:
+    src: "borgbackup-check.service"
+    dest: "/etc/systemd/system/borgbackup-check.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: Enable borgmatic-check timer
+
+- name: Add borgbackup-check timer
+  ansible.builtin.copy:
+    src: "borgbackup-check.timer"
+    dest: "/etc/systemd/system/borgbackup-check.timer"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: Enable borgmatic-check timer
