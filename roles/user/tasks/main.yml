@@ -58,7 +58,10 @@
       - new_system
 
 - name: Add authorized key
-  authorized_key: user={{ item.login }} key="{{ item.ssh_key }}" exclusive=yes
+  authorized_key:
+      user: "{{ item.login }}"
+      key: "{{ item.ssh_key|map(attribute='sshkey')|join('\n') }}"
+      exclusive: true
   with_items: "{{ users }}"
   when:
     - (users | default([])) | length
