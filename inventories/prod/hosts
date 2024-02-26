@@ -11,9 +11,24 @@ FI_HEL
 [DE_FSN]
 patrull ansible_host=2a01:4f8:c013:24ac::1
 pekhult ansible_host=2a01:4f8:c012:32ab::1
+gulligast ansible_host=2a01:4f8:c012:3485::1
+klappa ansible_host=2a01:4f8:1c17:62d9::1
+trolldom ansible_host=2a01:4f8:c17:a7ea::1
+aftonsparv ansible_host=2a01:4f8:c012:c8b5::1
+gosig ansible_host=2a01:4f8:c012:8a10::1
+jattematt ansible_host=2a01:4f8:c012:e6db::1
+knorrig ansible_host=2a01:4f8:c012:613c::1
+jattelik ansible_host=2a01:4f8:c013:2689::1
+tigerfink ansible_host=2a01:4f8:c012:6047::1
+underhalla ansible_host=2a01:4f8:242:4fe6::2
 
 [DE_NBG]
 tossig ansible_host=2a01:4f8:c0c:632e::1
+blavingad ansible_host=2a01:4f8:c0c:52a9::1
+fabler ansible_host=2a01:4f8:1c1e:8202::1
+vinterfint ansible_host=2a01:4f8:1c1b:8cf0::1
+barndrom ansible_host=2a01:4f8:c0c:ff00::1
+cirkustalt ansible_host=2a01:4f8:1c1e:e822::1
 
 [FI_HEL]
 lilleplutt ansible_host=2a01:4f9:c012:cb47::1
@@ -40,6 +55,7 @@ hedgedoc
 docker
 collabora
 mastodon
+matrix
 
 [monitoring]
 lilleplutt
@@ -54,31 +70,47 @@ alpaka.social
 tossig
 
 [mgmt]
+vinterfint
 
 [bbb]
-
+underhalla
 
 [bbb_front]
 pekhult
 
 [survey]
+blavingad
 
 [pretalx]
+klappa
 
 [presign]
+gosig
 
 [nextcloud]
+tigerfink
 
 [gitlab]
+jattelik
 
 [gitlab_runner]
+knorrig
+jattematt
 
 [gitlab_pages]
+fabler
 
 [zammad]
+gulligast
 
 [hedgedoc]
+trolldom
 
 [docker]
+aftonsparv
 
 [collabora]
+cirkustalt
+
+[matrix]
+barndrom
