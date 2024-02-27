@@ -29,6 +29,7 @@ fabler ansible_host=2a01:4f8:1c1e:8202::1
 vinterfint ansible_host=2a01:4f8:1c1b:8cf0::1
 barndrom ansible_host=2a01:4f8:c0c:ff00::1
 cirkustalt ansible_host=2a01:4f8:1c1e:e822::1
+blahaj ansible_host=2a01:4f8:1c1e:bfc8::1
 
 [FI_HEL]
 lilleplutt ansible_host=2a01:4f9:c012:cb47::1
@@ -56,6 +57,7 @@ docker
 collabora
 mastodon
 matrix
+lxc
 
 [monitoring]
 lilleplutt
@@ -114,3 +116,6 @@ cirkustalt
 
 [matrix]
 barndrom
+
+[lxc]
+blahaj
