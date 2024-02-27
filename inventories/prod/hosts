@@ -57,6 +57,7 @@ docker
 collabora
 mastodon
 matrix
+lxc
 
 [monitoring]
 lilleplutt
@@ -115,3 +116,6 @@ cirkustalt
 
 [matrix]
 barndrom
+
+[lxc]
+blahaj
