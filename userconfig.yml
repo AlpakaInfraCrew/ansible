@@ -6,5 +6,6 @@
     users:
      - "{{all_users.thies}}"
      - "{{all_users.strifel}}"
+     - "{{all_users.jadyn}}"
   roles:
     - role: user
