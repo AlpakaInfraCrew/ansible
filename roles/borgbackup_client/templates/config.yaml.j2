@@ -53,3 +53,8 @@ hooks:
       password: {{ borgbackup_mariadb_password }}
       options: "--single-transaction --quick"
 {% endif %}
+{% if borgbackup_psql_enable %}
+  postgresql_databases:
+    - name: all
+      username: postgres
+{% endif %}

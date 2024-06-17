@@ -19,4 +19,6 @@ borgbackup_key: !vault |
           38386137386137386231323431313131666466366233343535653938336366383862
 borgbackup_source_dirs: 
           - /home/mastodon
+borgbackup_psql_enable: true
+# As the backups are very large (and therefore take long) we make them less often
 borgbackup_interval: "daily"

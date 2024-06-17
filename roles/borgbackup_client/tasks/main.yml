@@ -40,6 +40,12 @@
   ansible.builtin.set_fact:
     borgbackup_target_ip: "{{ borgbackup_target_ip | default(hostvars[borgbackup_target_host]['ansible_default_ipv4']['address'], true) }}"
 
+- name: Allow Postgres access
+  ansible.builtin.lineinfile:
+    path: "{{ borgbackup_psql_config }}/pg_hba.conf"
+    line: "local   all             postgres                                trust"
+  when: borgbackup_psql_enable
+
 - name: Create Borg Repo
   ansible.builtin.command: "borg init -e repokey {{ borgbackup_target_user }}@{{ borgbackup_target_ip }}:{{ hostvars[borgbackup_target_host]['borgbackup_pool'] | default(borgbackup_pool) }}/{{ borgbackup_repo_path }}"
   environment:
