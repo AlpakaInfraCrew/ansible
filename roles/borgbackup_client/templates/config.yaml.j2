@@ -1,60 +1,56 @@
-location:
-  # List of source directories to backup. Globs are expanded.
+# List of source directories to backup. Globs are expanded.
 {% if borgbackup_source_dirs | length == 0 %}
-  source_directories: []
+source_directories: []
 {% else %}
-  source_directories:
+source_directories:
 {% for item in borgbackup_source_dirs %}
-    - {{ item }}
+  - {{ item }}
 {% endfor %}
 {% endif %}
 
-  # Paths to local or remote repositories.
-  repositories:
-  - "ssh://{{ borgbackup_target_user }}@{{ borgbackup_target_ip }}{{ hostvars[borgbackup_target_host]['borgbackup_pool'] | default(borgbackup_pool) }}/{{ borgbackup_repo_path }}"
+# Paths to local or remote repositories.
+repositories:
+- path: "ssh://{{ borgbackup_target_user }}@{{ borgbackup_target_ip }}{{ hostvars[borgbackup_target_host]['borgbackup_pool'] | default(borgbackup_pool) }}/{{ borgbackup_repo_path }}"
+  label: default
 
-  exclude_patterns:
-  {% for item in borgbackup_exclude_dirs %}
-  - {{ item }}
-  {% endfor %}
+exclude_patterns:
+{% for item in borgbackup_exclude_dirs %}
+- {{ item }}
+{% endfor %}
 
 
-storage:
-  ssh_command: ssh -p{{ borgbackup_target_port }}
-  compression: {{ borgbackup_compression }}
+ssh_command: ssh -p{{ borgbackup_target_port }}
+compression: {{ borgbackup_compression }}
 {% if borgbackup_enable_encryption %}
-  encryption_passphrase: {{ borgbackup_key }}
+encryption_passphrase: {{ borgbackup_key }}
 {% endif %}
-  chunker_params: {{ borgbackup_chunker_params }}
+chunker_params: {{ borgbackup_chunker_params }}
 {% if borgbackup_extra_borg_options | length != 0 %}
-  extra_borg_options:
-    {{ borgbackup_extra_borg_options | to_nice_yaml(indent=2) | indent(4) }}
+extra_borg_options:
+  {{ borgbackup_extra_borg_options | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
-retention:
 # Retention policy for how many backups to keep in each category.
-  keep_within: {{ borgbackup_keep_within }}
-  keep_daily: {{ borgbackup_keep_daily }}
-  keep_weekly: {{ borgbackup_keep_weekly }}
-  keep_monthly: {{ borgbackup_keep_monthly }}
-  keep_yearly: {{ borgbackup_keep_yearly }}
+keep_within: {{ borgbackup_keep_within }}
+keep_daily: {{ borgbackup_keep_daily }}
+keep_weekly: {{ borgbackup_keep_weekly }}
+keep_monthly: {{ borgbackup_keep_monthly }}
+keep_yearly: {{ borgbackup_keep_yearly }}
 
-consistency:
-  checks:
-  - repository
-  - archives
-  check_last: 3
+checks:
+  - name: repository
+  - name: archives
+check_last: 3
 
 {% if borgbackup_mariadb_enable %}
-hooks:
-  mysql_databases:
-    - name: all
-      username: {{ borgbackup_mariadb_user }}
-      password: {{ borgbackup_mariadb_password }}
-      options: "--single-transaction --quick"
+mysql_databases:
+  - name: all
+    username: {{ borgbackup_mariadb_user }}
+    password: {{ borgbackup_mariadb_password }}
+    options: "--single-transaction --quick"
 {% endif %}
 {% if borgbackup_psql_enable %}
-  postgresql_databases:
-    - name: all
-      username: postgres
+postgresql_databases:
+  - name: all
+    username: postgres
 {% endif %}

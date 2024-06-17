@@ -1,13 +1,5 @@
 ---
-- name: Add public key to storagebox
-  ansible.builtin.shell:
-    cmd: "echo '{{ borgbackup_source_key }}' | ssh -i /root/.ssh/id_ed25519 -p {{ borgbackup_target_port }} {{ borgbackup_target_user }}@{{ borgbackup_target_ip }} install-ssh-key"
-  register: add_result
-  changed_when: "'skip it' not in add_result.stdout"
-  when: "{{ borgbackup_target_is_storagebox }}"
-
 - name: Add public key
   ansible.posix.authorized_key:
     user: "{{ borgbackup_target_user }}"
     key: "{{ borgbackup_source_key }}"
-  when: "not {{ borgbackup_target_is_storagebox }}"

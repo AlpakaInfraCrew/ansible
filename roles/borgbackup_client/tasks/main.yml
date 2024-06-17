@@ -1,11 +1,52 @@
 ---
-- name: Install borg  # noqa package-latest
+# As earlier playbook versions used apt and to prevent having two borg versions installed
+# we remove them here
+- name: Make sure borg is not installed via apt # noqa package-latest
   ansible.builtin.apt:
     name:
       - borgmatic
-      - python3-pyfuse3
+      - borgbackup
+    state: absent
+
+- name: Make sure dependencies are installed # noqa package-latest
+  ansible.builtin.apt:
+    name:
+      - libfuse3-dev
+      - libacl1-dev
+      - libssl-dev
+      - "{{ 'python3-venv' if ansible_distribution == 'Ubuntu' else 'python3-full' }}"
+      - python3-dev
+      - pkg-config
+      - gcc
     state: latest
 
+# Install Borg via pip as it is more current than debian and a lot more current than ubuntu
+# This is quite important for data integrity and a good idea for newer features (that are not yet on Ubuntu)
+# We can not download the static binaries as there are no official ones for ARM
+# We need to install into a virtualenv, as the python env from debian is apt managed
+- name: Make sure borg is intalled # noqa package-latest
+  ansible.builtin.pip:
+    name: 
+      - pyfuse3
+      - borgbackup[pyfuse3]
+      - borgmatic
+      - zulip
+    state: latest
+    virtualenv_command: python3 -m venv
+    virtualenv: /opt/borg-venv
+
+- name: Link borg into path
+  ansible.builtin.file:
+    src: '/opt/borg-venv/bin/{{ item }}'
+    dest: '/usr/bin/{{ item }}'
+    owner: root
+    group: root
+    state: hard
+  loop:
+    - borg
+    - borgmatic
+
+# This is later used to access the backup server/storage box
 - name: Generate SSH key
   ansible.builtin.user:
     name: root
@@ -17,12 +58,21 @@
   register: hostkey
   changed_when: false
 
-- name: Create Repo on backup target
+- name: Configure storage box access
+  ansible.builtin.import_tasks: onserver_storagebox.yml
+  vars:
+    borgbackup_source_key: "{{ hostkey.stdout }}"
+    borgbackup_source_host: "{{ ansible_hostname }}"
+  delegate_to: "{{ borgbackup_target_host }}"
+  when: "borgbackup_target_is_storagebox"
+
+- name: Create borg on remote server
   ansible.builtin.import_tasks: onserver.yml
   vars:
     borgbackup_source_key: "{{ hostkey.stdout }}"
     borgbackup_source_host: "{{ ansible_hostname }}"
   delegate_to: "{{ borgbackup_target_host }}"
+  when: "not borgbackup_target_is_storagebox"
 
 - name: Check if Repo already exists
   ansible.builtin.stat:
