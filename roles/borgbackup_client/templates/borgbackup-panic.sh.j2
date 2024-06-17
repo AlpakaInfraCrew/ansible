@@ -1,0 +1,11 @@
+#!/bin/bash
+
+{% if borgbackup_zulip %}
+/opt/borg-venv/bin/zulip-send --user "{{ borgbackup_zulip_user }}" --api-key "{{ borgbackup_zulip_apikey }}" --site "{{ borgbackup_zulip_site }}" -s "{{ borgbackup_zulip_stream }}" -S "{{ borgbackup_zulip_subject }}" << EOF
+Oh no :(
+The service $1.service on host $(hostname) failed.
+
+$(systemctl status -l -n 1000 $1.service)
+EOF
+
+{% endif %}

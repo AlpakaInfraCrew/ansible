@@ -1,5 +1,6 @@
 [Unit]
 Description=Borgbackup weekly check timer
+OnFailure=borgbackup-panic@%N.service
 
 [Timer]
 # Run every sunday

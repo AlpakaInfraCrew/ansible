@@ -152,3 +152,20 @@
     group: "root"
     mode: "0644"
   notify: Enable borgmatic-check timer
+
+- name: Copy notify script
+  ansible.builtin.template:
+    src: borgbackup-panic.sh.j2
+    dest: /usr/local/bin/borgbackup-panic
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy notify service
+  ansible.builtin.copy:
+    src: borgbackup-panic.service
+    dest: /etc/systemd/system/borgbackup-panic@.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Enable borgmatic-check timer
