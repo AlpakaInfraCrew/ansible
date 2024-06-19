@@ -1,2 +1,8 @@
 ---
-roles: []
+roles:
+  - src: https://github.com/geerlingguy/ansible-role-docker.git
+    scm: git
+    version: 7.2.0
+  - src: https://gitlab.fachschaften.org/fsi-ansible/compose_service.git
+    scm: git
+    version: v1.0.0

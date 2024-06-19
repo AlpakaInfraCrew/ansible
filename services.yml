@@ -1,0 +1,4 @@
+---
+- hosts: klappa
+  roles:
+    - pretalx
