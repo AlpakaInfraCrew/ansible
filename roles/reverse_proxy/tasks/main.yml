@@ -1,0 +1,26 @@
+---
+- name: Install certbot
+  ansible.builtin.apt:
+    name:
+      - python3-certbot
+      - python3-certbot-nginx
+    state: present
+
+- name: Make sure cert exists
+  ansible.builtin.command:
+    cmd: /usr/bin/certbot certonly -d "{{ reverse_proxy_domain }}" --email "{{ certbot_email }}" --nginx --agree-tos -n
+    creates: "/etc/letsencrypt/live/{{ reverse_proxy_domain }}/fullchain.pem"
+
+- name: Ensure renew hook is set
+  ansible.builtin.cron:
+    name: "renew certs"
+    minute: "0"
+    hour: "0"
+    job: "certbot renew && systemctl restart nginx"
+
+- name: Ensure nginx site config is there
+  ansible.builtin.template:
+    src: site.conf.j2
+    dest: "/etc/nginx/conf.d/{{ reverse_proxy_domain }}.conf"
+  when: "reverse_proxy_port | d(false)"
+  notify: "restart nginx"

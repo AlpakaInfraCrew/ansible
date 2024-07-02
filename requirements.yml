@@ -6,3 +6,6 @@ roles:
   - src: https://gitlab.fachschaften.org/fsi-ansible/compose_service.git
     scm: git
     version: v1.0.0
+  - src: https://gitlab.fachschaften.org/fsi-ansible/nginx
+    scm: git
+    version: v1.1.0
