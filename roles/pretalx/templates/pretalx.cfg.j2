@@ -1,0 +1,34 @@
+[filesystem]
+# use PRETALX_FILESYSTEM_* env vars
+
+[site]
+; never run debug in production.
+debug = False
+url = https://{{ pretalx_domain }}
+
+[database]
+backend = mysql
+name = pretalx
+user = pretalx
+password = {{ pretalx_db_password }}
+host = pretalx-db
+port = 3306
+
+[mail]
+from = {{ smtp_from }}
+host = smtp
+port = {{ smtp_port }}
+user = {{ smtp_user }}
+password = {{ smtp_password }}
+tls = True
+ssl = False
+
+[celery]
+backend = redis://pretalx-redis/1
+broker = redis://pretalx-redis/2
+
+[redis]
+location=redis://pretalx-redis/0
+; Remove the following line if you are unsure about your redis' security
+; to reduce impact if redis gets compromised.
+sessions=true

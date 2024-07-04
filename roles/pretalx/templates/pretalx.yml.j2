@@ -1,0 +1,38 @@
+services:
+  pretalx:
+    image: pretalx/standalone:latest
+    container_name: pretalx
+    restart: always
+    depends_on: 
+      - redis
+      - db
+    environment:
+      PRETALX_FILESYSTEM_MEDIA: /public/media
+      PRETALX_FILESYSTEM_STATIC: /public/static
+    ports:
+      - "0.0.0.0:8080:80"
+    volumes: 
+      - ./pretalx.cfg:/etc/pretalx/pretalx.cfg:ro
+      - ./pretalx-data:/data
+      - ./pretalx-public:/public
+
+  db:
+    image: mysql:latest
+    container_name: pretalx-db
+    restart: always
+    volumes:
+      - ./pretalx-db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: pretalx
+      MYSQL_USER: pretalx
+      MYSQL_PASSWORD: {{ pretalx_db_password }}
+      MYSQL_RANDOM_ROOT_PASSWORD: "1"
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+  redis:
+    image: redis:latest
+    container_name: pretalx-redis
+    restart: always
+    volumes: 
+      - ./pretalx-redis:/data
+
