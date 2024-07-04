@@ -1,0 +1,17 @@
+---
+- name: Ensure backup directory exists
+  ansible.builtin.file:
+    path: /backup
+    owner: root
+    group: root
+    mode: "0755"
+    state: directory
+
+- name: Run compose_service role
+  ansible.builtin.import_role:
+    name: compose_service
+  vars:
+    compose_service_name: zammad
+    compose_service_definition: "{{ lookup('ansible.builtin.template', 'zammad.yml.j2') | from_yaml }}"
+
+
