@@ -22,3 +22,5 @@ The `borgbackup_target_host` should have the Storage Space mounted.
    Example: `foo.example.com`
 - `borgbackup_target_port`: Overrides ssh port
 - `borgbackup_use_encryption`: Disables encryption if set to false. Defaults to true. 
+- `borgbackup_psql_enable`: Enable postgres backups
+- `borgbackup_psql_config`: Set postgres config path

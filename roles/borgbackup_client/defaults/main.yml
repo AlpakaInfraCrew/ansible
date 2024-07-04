@@ -31,3 +31,6 @@ borgbackup_extra_borg_options: []
 borgbackup_enable_encryption: true
 borgbackup_target_port: 22
 borgbackup_target_is_storagebox: false
+borgbackup_psql_enable: false
+borgbackup_psql_config: "/etc/postgresql/14/main/"
+borgbackup_zulip: false

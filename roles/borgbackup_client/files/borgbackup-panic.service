@@ -1,0 +1,6 @@
+[Unit]
+Description=Notifies on failed %i
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/borgbackup-panic %i
