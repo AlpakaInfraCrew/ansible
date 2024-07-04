@@ -40,3 +40,16 @@ all_users:
           - name: jadyn
             sshkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE3t8KoOReYXNKxMLKOrwIm7y17daLejUlDBEtp5uGrc
         shell: /bin/bash
+    hanno:
+        login: hanno
+        name: Hanno
+        password: None
+        group: ADMINS
+        group_id: 2002
+        non_unique: yes
+        uid: 0
+        update_password: always
+        ssh_key:
+          - name: hastern
+            sshkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKB0WSwADD5juzKV59XhHwADISmd4i/XT0ZphZYHN1l7
+        shell: /bin/bash
