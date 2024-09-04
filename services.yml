@@ -3,3 +3,8 @@
   roles:
     - pretalx
     - reverse_proxy
+
+- hosts: zammad
+  roles:
+    - zammad
+    - reverse_proxy
