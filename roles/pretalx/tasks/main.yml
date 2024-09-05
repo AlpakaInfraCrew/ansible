@@ -1,0 +1,23 @@
+---
+- name: Ensure pretalx directory exists
+  ansible.builtin.file:
+    path: /opt/pretalx
+    owner: root
+    group: root
+    mode: "0755"
+    state: directory
+
+- name: Ensure pretix config is there
+  ansible.builtin.template:
+    src: pretalx.cfg.j2
+    dest: /opt/pretalx/pretalx.cfg
+    mode: "0644"
+
+- name: Run compose_service role
+  ansible.builtin.import_role:
+    name: compose_service
+  vars:
+    compose_service_name: pretalx
+    compose_service_definition: "{{ lookup('ansible.builtin.template', 'pretalx.yml.j2') | from_yaml }}"
+
+

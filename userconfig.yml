@@ -7,5 +7,6 @@
      - "{{all_users.thies}}"
      - "{{all_users.strifel}}"
      - "{{all_users.jadyn}}"
+     - "{{all_users.hanno}}"
   roles:
     - role: user

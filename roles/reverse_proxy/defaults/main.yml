@@ -1,0 +1,2 @@
+reverse_proxy_max_body_size: 5
+reverse_proxy_webroot: /var/www/html
