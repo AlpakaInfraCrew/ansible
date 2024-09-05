@@ -3,3 +3,8 @@
   roles:
     - pretalx
     - reverse_proxy
+
+- hosts: trolldom
+  roles:
+    - hedgedoc
+    - reverse_proxy

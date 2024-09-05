@@ -1,0 +1,36 @@
+version: '3'
+services:
+  database:
+    image: postgres:13.4-alpine
+    environment:
+      - POSTGRES_USER=hedgedoc
+      - POSTGRES_PASSWORD={{ hedgedoc_postgres_password }}
+      - POSTGRES_DB=hedgedoc
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    restart: always
+  app:
+    image: quay.io/hedgedoc/hedgedoc:1.10.0
+    environment:
+      - CMD_DB_URL=postgres://hedgedoc:{{ hedgedoc_postgres_password }}@database:5432/hedgedoc
+      - CMD_DOMAIN={{ hedgedoc_domain }}
+      - CMD_PROTOCOL_USESSL=true
+      - CMD_URL_ADDPORT=false
+      - CMD_EMAIL=false
+      - CMD_ALLOW_EMAIL_REGISTER=false
+      - CMD_OAUTH2_CLIENT_ID={{ hedgedoc_oauth_client_id }}
+      - CMD_OAUTH2_CLIENT_SECRET={{ hedgedoc_oauth_client_secret }}
+      - CMD_OAUTH2_AUTHORIZATION_URL={{ hedgedoc_oauth_auth_url }}
+      - CMD_OAUTH2_TOKEN_URL={{ hedgedoc_oauth_token_url }}
+      - CMD_OAUTH2_USER_PROFILE_URL={{ hedgedoc_oauth_user_profile_url }}
+      - CMD_OAUTH2_USER_PROFILE_USERNAME_ATTR={{ hedgedoc_oauth_user_profile_username }}
+      - CMD_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR={{ hedgedoc_oauth_user_profile_display_name }}
+      - CMD_OAUTH2_USER_PROFILE_EMAIL_ATTR={{ hedgedoc_oauth_user_profile_email }}
+      - CMD_OAUTH2_PROVIDERNAME={{ hedgedoc_oauth_providername }}
+    volumes:
+      - ./uploads:/hedgedoc/public/uploads
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: always
+    depends_on:
+      - database

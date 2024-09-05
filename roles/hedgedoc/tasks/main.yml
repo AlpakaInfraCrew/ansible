@@ -1,0 +1,9 @@
+---
+- name: Run compose_service role
+  ansible.builtin.import_role:
+    name: compose_service
+  vars:
+    compose_service_name: hedgedoc
+    compose_service_definition: "{{ lookup('ansible.builtin.template', 'hedgedoc.yml.j2') | from_yaml }}"
+
+
