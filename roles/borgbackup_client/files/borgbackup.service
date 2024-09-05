@@ -4,6 +4,7 @@ Wants=network-online.target
 After=network-online.target
 # Do not try to start if check is already running
 After=borgbackup-check.service
+OnFailure=borgbackup-panic@%N.service
 
 [Service]
 Type=oneshot
