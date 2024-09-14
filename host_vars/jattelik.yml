@@ -1,3 +1,5 @@
+ansible_become: true
+ansible_become_method: sudo
 borgbackup_key: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           33386532346166393537663931303837623135306566653734363834333561353865393031633033
@@ -19,3 +21,4 @@ borgbackup_key: !vault |
           38663236616465343134373063393234303837323661646333373435663364316230
 borgbackup_source_dirs:
   - /home
+  - /var/opt/gitlab
