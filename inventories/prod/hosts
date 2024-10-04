@@ -56,7 +56,7 @@ hedgedoc
 docker
 collabora
 mastodon
-matrix
+matrix_servers
 lxc
 
 [monitoring]
@@ -114,7 +114,7 @@ aftonsparv
 [collabora]
 cirkustalt
 
-[matrix]
+[matrix_servers]
 barndrom
 
 [lxc]

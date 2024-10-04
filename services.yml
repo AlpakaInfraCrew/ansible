@@ -8,3 +8,7 @@
   roles:
     - hedgedoc
     - reverse_proxy
+
+- hosts: barndrom
+  roles: 
+    - matrix_authentication_service

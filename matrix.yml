@@ -1,0 +1,5 @@
+#!/usr/bin/env -S ansible-playbook --tags 'install-all,start'
+---
+
+- name: Setup matrix
+  import_playbook: matrix_playbook/setup.yml

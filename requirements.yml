@@ -9,3 +9,6 @@ roles:
   - src: https://gitlab.fachschaften.org/fsi-ansible/nginx
     scm: git
     version: v1.1.0
+  - src: https://gitlab.fachschaften.org/fsi-ansible/matrix_authentication_service
+    scm: git
+    version: v1.0.0

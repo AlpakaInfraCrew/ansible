@@ -1,0 +1,3 @@
+[submodule "matrix_playbook"]
+	path = matrix_playbook
+	url = https://github.com/spantaleev/matrix-docker-ansible-deploy

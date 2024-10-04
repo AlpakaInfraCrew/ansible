@@ -19,3 +19,260 @@ borgbackup_key: !vault |
           37336566336439623337346264623966326336316565343334383037633236386662
 borgbackup_source_dirs:
   - /home
+  - /matrix
+  - /opt/matrix_authentication_server
+
+ansible_user: strifel
+
+#### Custom Matrix Config
+
+matrix_support_mail: support@alpaka.network
+matrix_support_page: https://requests.alpaka.space
+
+#### matrix-docker-ansible-deploy
+
+matrix_domain: alpaka.social
+matrix_homeserver_implementation: synapse
+matrix_homeserver_generic_secret_key: "{{ matrix_synapse_macaroon_secret_key }}"
+
+devture_traefik_config_certificatesResolvers_acme_email: "service@alpaka.network"
+
+devture_postgres_connection_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37616138623639346239303430623362623562376138383462383165383936633965313966353132
+          3033373966383165343236666233356535343163376464610a303266653034323262643731323432
+          66393436326636303735323662336330336630363364653163313766356364383235363735663236
+          3165333861326337300a623936343137363461666234303930643264306139313431313933666666
+          35613039623739313738643432363438396361313363646236333638343361663035333232626266
+          39303766383336393266306235316239313431376534383163303937376162346662303231386361
+          35613662633433333037616466643561626237393163326161343039396437653565383065666262
+          66336232613030353833
+
+### Non-default settings
+## matrix-base
+devture_playbook_state_preserver_vars_preservation_src: "{{ inventory_dir }}/../../host_vars/{{ inventory_hostname }}.yml"
+
+# Run Client & Federation APIs on the same port
+matrix_federation_public_port: 443
+matrix_synapse_http_listener_resource_names: [client, federation]
+matrix_synapse_federation_port_enabled: false
+# Secrets
+matrix_synapse_macaroon_secret_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          63323938643932633161663235303135326435333962623563326238623630363634623031633862
+          3363643666646432643762633261613763356634613363640a393962666564366438366561373731
+          65316338633131366364613636626532653764316239653662336464363565653263363361643535
+          6663646465376336380a313965323037336339613734346132383132346363386436303562633033
+          33373730393463613062373430336439323565663534643939643763303136316562623235623361
+          66393634623861626334323330643864376632336161326661343262616530313439663465363262
+          36653337643763666463393230383534373262616337303937363164343634616166333039303339
+          37626531323666366339
+matrix_synapse_registration_shared_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34346438313932336133316162323139303165373139613430366265396138633866373866336664
+          6335656432613030636131373165373366383031396164340a626230303465333961366166653734
+          62623765656461336635323364363464616137343166633233353834653435343133373936653432
+          3830653938623635640a303830316664366136616637666339643633336163396334346464663061
+          31323366663262616135386662316435356365373538323638373534626639303135643562643031
+          38386131643832386234366338393933303239643039303361613538383863643236623965326365
+          39333664333331366365663434656130373232666538353161333263386438343730646437626331
+          64373834343336623339
+matrix_synapse_ext_password_provider_shared_secret_auth_enabled: false
+# Metrics
+matrix_synapse_metrics_enabled: true
+matrix_synapse_metrics_proxying_enabled: true
+matrix_synapse_report_stats: true
+
+## OIDC (more under MISC)
+matrix_synapse_oidc_enabled: false
+matrix_custom_oidc_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32323964633339323662663938663232353937323061323632306631393534633064613132646533
+          6161636164613738353661623538363665326462333263390a613539633963613934343232393137
+          36333562636233646238313865363036373463613836353465613931346136636666323261316439
+          3933643863353465640a626139623036636337636535373738343930363165366336356165666464
+          36396130386632643831303863306137376365616536633635656536613362353935656233313065
+          38383562333630383032626364336532393631666430363566323466386638663534643135343730
+          35383539366439666334653930666534633439353232326463333137653064666238316361356338
+          30633933346366373862
+matrix_custom_oidc_client_id: "chat.alpaka.social"
+# steht hier nur zur Deko, man muss den *sync*-Knopf drücken
+matrix_custom_oidc_issuer: https://auth.alpaka.space
+
+# Misc
+matrix_synapse_password_config_enabled: false
+matrix_synapse_allow_public_rooms_over_federation: true
+matrix_synapse_enable_authenticated_media: true
+matrix_synapse_user_ips_max_age: 14d
+
+matrix_synapse_configuration_extension_yaml: |
+  metrics_flags:
+    known_servers: true
+  url_preview_ip_range_blacklist:
+   - '127.0.0.0/8'
+   - '10.0.0.0/8'
+   - '172.16.0.0/12'
+   - '192.168.0.0/16'
+   - '100.64.0.0/10'
+   - '169.254.0.0/16'
+   - '::1/128'
+   - 'fe80::/64'
+   - 'fc00::/7'
+  experimental_features:
+    msc3861:
+      enabled: true
+
+      # Synapse will call `{issuer}/.well-known/openid-configuration` to get the OIDC configuration
+      issuer: https://matrix-auth.alpaka.social/
+
+      # Matches the `client_id` in the auth service config
+      client_id: 0000000000000000000SYNAPSE
+      # Matches the `client_auth_method` in the auth service config
+      client_auth_method: client_secret_basic
+      # Matches the `client_secret` in the auth service config
+      client_secret: "{{ matrix_authentication_service_client_secret }}"
+
+      # Matches the `matrix.secret` in the auth service config
+      admin_token: "{{ matrix_authentication_service_homeserver_secret }}"
+
+      # URL to advertise to clients where users can self-manage their account
+      account_management_url: "https://matrix-auth.alpaka.social/account"
+
+
+matrix_synapse_additional_loggers_custom:
+  - name: synapse.state.metrics
+    level: DEBUG
+
+## Element
+matrix_server_fqn_element: chat.alpaka.social
+matrix_client_element_brand: alpaka.social Element
+matrix_client_element_configuration_extension_json: |
+  {
+    "settingDefaults": {
+      "UIFeature.communities": false,
+      "UIFeature.registration": false,
+      "UIFeature.passwordReset": false,
+      "UIFeature.deactivate": false
+    }
+  }
+
+## Email
+exim_relay_sender_address: support@alpaka.network
+
+## Metrics
+matrix_metrics_exposure_enabled: true
+matrix_metrics_exposure_http_basic_auth_enabled: true
+matrix_metrics_exposure_http_basic_auth_users: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30623763623737353865663063306431396636666539666361613332323164386634376263646163
+          3065363132373633303864336164323662363337626561370a363062316433633036393861633366
+          38373839663539333337613563376432306334656366346661656565346232356165346135323533
+          3133383338333763340a643736393630383764396262653661383961643565313761616634303737
+          33653136613837323431376433616438383261376339643638316561343735623065303665303562
+          3833393632386437626666343832313061633638353862333566
+
+## Traefik
+matrix_playbook_reverse_proxy_type: playbook-managed-traefik
+# Ensure that public urls use https
+matrix_playbook_ssl_enabled: true
+# Disable access logs
+devture_traefik_config_accessLog_enabled: false # noqa var-naming
+
+## Other Reverse Proxies
+matrix_static_files_container_labels_base_domain_enabled: false
+
+# Disable spammy access log
+matrix_synapse_reverse_proxy_companion_access_log_enabled: false
+# Increase maximum request size to fix federation with matrix.org
+matrix_synapse_reverse_proxy_companion_client_api_client_max_body_size_mb: 150
+
+## TURN
+matrix_coturn_enabled: true
+
+## Synapse Admin
+matrix_synapse_admin_enabled: true
+
+## Service Manager
+devture_systemd_service_manager_up_verification_delay_seconds: 35
+
+## Matrix Authentication Service
+matrix_authentication_service_enable: true
+matrix_authentication_service_pg_create_database: false # We need to create them manually
+matrix_authentication_service_pg_host: 172.19.0.2
+matrix_authentication_service_pg_port: 5432
+matrix_authentication_service_pg_user: matrix_mas
+matrix_authentication_service_pg_database: matrix_mas
+matrix_authentication_service_pg_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66343139616261663636303438363339306636356661386439373935646133343433326531383663
+          3232393334616662633461613162633337633265333463320a633432656331663361653031306364
+          39616362656437336335363938316166643665326662346431323466346434306131343062343738
+          3263313037316230300a633463373031626463343835376330386364303965393336613531656363
+          32386436386433303038643864393466303130643763376462623964353665373033363937313162
+          37393637666462623036643335633465336563653938616339633135383031333039633363636461
+          65366566626439353565653433633663336138346234393731613264343138613761663261306638
+          66383564313231386438
+
+matrix_authentication_service_client_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32633566303562366436653839636663393437316665326139376663303637636361313165343634
+          3466396162643561313962643434326139316534393539300a653230633736386634333465343736
+          63333530366338313339326333303364313962633438643163323166636338333036336231623364
+          3534656565376161390a613335373330303763313161663335353234646633623664383537306437
+          66613238663132313265383230626235353031633835623837333465343862323335313937383166
+          36353735663939396264616532623961343838663361366532306230376230373431656530373030
+          32653730336637343436623337656435356237313232393964623365666362613933633762626466
+          63343964346639643966
+matrix_authentication_service_homeserver: alpaka.social
+matrix_authentication_service_arch: aarch64
+matrix_authentication_service_homeserver_endpoint: "https://matrix.alpaka.social"
+matrix_authentication_service_homeserver_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37323439663862393061613136373836343236373638313162353433626136343930326533396335
+          6532646538336431316462303065303936316634616233630a326434616661623261663461643966
+          30386234653362356466343736386464366133363239366333643037643461633766346333643033
+          3633613538623934330a613635386138616461326136316664323438346431636335353332633730
+          34386462613763383732323239363633323561356162386332623661353238316338366466306530
+          31656437333761353738636634356630633431636230333338336465336234333536623639656362
+          65633033646236663230356365343733336662653438373632626130616565623538346639316263
+          64396339626233313333
+matrix_authentication_service_http_public_base: https://matrix-auth.alpaka.social
+matrix_authentication_service_upstream_provider_id: "01J7HJ130VC59N0NT52HN6D8AH"
+matrix_authentication_service_upstream_provider_human_name: "Alpaka SSO"
+matrix_authentication_service_email_from: '"Alpaka.Social Chat" <{{ smtp_from }}>'
+matrix_authentication_service_email_reply_to: '"AlpakaInfraCrew" <service@alpaka.network>'
+matrix_authentication_service_email_hostname: "{{ smtp_server }}"
+matrix_authentication_service_email_port: "{{ smtp_port }}"
+matrix_authentication_service_email_username: "{{ smtp_user }}"
+matrix_authentication_service_email_password: "{{ smtp_password }}"
+
+matrix_static_files_file_matrix_client_configuration_extension_json: |
+  {
+    "org.matrix.msc2965.authentication": {
+      "issuer": "https://matrix-auth.alpaka.social/",
+      "account": "https://matrix-auth.alpaka.social/account/"
+    }
+  }
+
+devture_traefik_configuration_extension_yaml: |
+  providers:
+    file:
+      directory: /config/extra
+      watch: true
+      filename: ""
+
+aux_file_definitions:
+  - dest: "{{ devture_traefik_config_dir_path }}/extra/mas.yml" # the folder needs to be created manually
+    content: |
+      http:
+        routers:
+          mas-router:
+            rule: Host(`matrix-auth.alpaka.social`) || (Host(`matrix.alpaka.social`) && (PathRegexp(`^/_matrix/client/\w+/(login|logout|refresh)`)))
+            service: mas-service
+            tls:
+              certResolver: default
+        services:
+          mas-service:
+            loadBalancer:
+              servers:
+                - url: "http://172.22.0.1:8080"
