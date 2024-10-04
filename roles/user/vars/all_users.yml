@@ -66,3 +66,16 @@ all_users:
           - name: pajowu
             sshkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOxdop2Mb44YLFHhpRZScN7xwRkLeP+LrNC5J7k87QLn
         shell: /bin/bash
+    m4schini:
+        login: m4schini
+        name: m4schini
+        password: None
+        group: ADMINS
+        group_id: 2002
+        non_unique: yes
+        uid: 0
+        update_password: always
+        ssh_key:
+          - name: m4schini
+            sshkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPki/Fj6hRu+dRViQoZ+4BK5uQor3UOVPHrImPIhAXPd
+        shell: /bin/bash

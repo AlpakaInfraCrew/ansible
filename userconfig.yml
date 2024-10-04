@@ -9,5 +9,6 @@
      - "{{all_users.jadyn}}"
      - "{{all_users.hanno}}"
      - "{{all_users.pajowu}}"
+     - "{{all_users.m4schini}}"
   roles:
     - role: user
