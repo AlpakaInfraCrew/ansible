@@ -8,5 +8,6 @@
      - "{{all_users.strifel}}"
      - "{{all_users.jadyn}}"
      - "{{all_users.hanno}}"
+     - "{{all_users.pajowu}}"
   roles:
     - role: user
