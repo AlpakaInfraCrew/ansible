@@ -35,9 +35,9 @@ matrix_domain: alpaka.social
 matrix_homeserver_implementation: synapse
 matrix_homeserver_generic_secret_key: "{{ matrix_synapse_macaroon_secret_key }}"
 
-devture_traefik_config_certificatesResolvers_acme_email: "service@alpaka.network"
+traefik_config_certificatesResolvers_acme_email: "service@alpaka.network"
 
-devture_postgres_connection_password: !vault |
+postgres_connection_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37616138623639346239303430623362623562376138383462383165383936633965313966353132
           3033373966383165343236666233356535343163376464610a303266653034323262643731323432
@@ -176,7 +176,7 @@ matrix_playbook_reverse_proxy_type: playbook-managed-traefik
 # Ensure that public urls use https
 matrix_playbook_ssl_enabled: true
 # Disable access logs
-devture_traefik_config_accessLog_enabled: false # noqa var-naming
+traefik_config_accessLog_enabled: false # noqa var-naming
 
 ## Other Reverse Proxies
 matrix_static_files_container_labels_base_domain_enabled: false
@@ -254,7 +254,7 @@ matrix_static_files_file_matrix_client_configuration_extension_json: |
     }
   }
 
-devture_traefik_configuration_extension_yaml: |
+traefik_configuration_extension_yaml: |
   providers:
     file:
       directory: /config/extra
@@ -262,7 +262,7 @@ devture_traefik_configuration_extension_yaml: |
       filename: ""
 
 aux_file_definitions:
-  - dest: "{{ devture_traefik_config_dir_path }}/extra/mas.yml" # the folder needs to be created manually
+  - dest: "{{ traefik_config_dir_path }}/extra/mas.yml" # the folder needs to be created manually
     content: |
       http:
         routers:
@@ -276,3 +276,5 @@ aux_file_definitions:
             loadBalancer:
               servers:
                 - url: "http://172.22.0.1:8080"
+
+# TODO Variable für extra postgres dbs setzen und die die postgres auf dem host exposed
