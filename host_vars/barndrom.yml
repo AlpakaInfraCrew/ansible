@@ -254,27 +254,18 @@ matrix_static_files_file_matrix_client_configuration_extension_json: |
     }
   }
 
-traefik_configuration_extension_yaml: |
-  providers:
-    file:
-      directory: /config/extra
-      watch: true
-      filename: ""
-
-aux_file_definitions:
-  - dest: "{{ traefik_config_dir_path }}/extra/mas.yml" # the folder needs to be created manually
-    content: |
-      http:
-        routers:
-          mas-router:
-            rule: Host(`matrix-auth.alpaka.social`) || (Host(`matrix.alpaka.social`) && (PathRegexp(`^/_matrix/client/\w+/(login|logout|refresh)`)))
-            service: mas-service
-            tls:
-              certResolver: default
-        services:
-          mas-service:
-            loadBalancer:
-              servers:
-                - url: "http://172.22.0.1:8080"
+traefik_provider_configuration_extension_yaml: |
+  http:
+    routers:
+      mas-router:
+        rule: Host(`matrix-auth.alpaka.social`) || (Host(`matrix.alpaka.social`) && (PathRegexp(`^/_matrix/client/\w+/(login|logout|refresh)`)))
+        service: mas-service
+        tls:
+          certResolver: default
+    services:
+      mas-service:
+        loadBalancer:
+          servers:
+            - url: "http://172.22.0.1:8080"
 
 # TODO Variable für extra postgres dbs setzen und die die postgres auf dem host exposed
