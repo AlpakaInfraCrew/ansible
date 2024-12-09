@@ -8,3 +8,8 @@
   roles:
     - hedgedoc
     - reverse_proxy
+
+- hosts: tigerfink
+  become: true
+  roles:
+    - ansible-role-bigbluebutton

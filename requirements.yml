@@ -9,3 +9,6 @@ roles:
   - src: https://gitlab.fachschaften.org/fsi-ansible/nginx
     scm: git
     version: v1.1.0
+  - src: https://github.com/ebbba-org/ansible-role-bigbluebutton
+    scm: git
+    version: v2.7.11
