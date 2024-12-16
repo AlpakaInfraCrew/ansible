@@ -142,6 +142,12 @@ matrix_synapse_configuration_extension_yaml: |
 matrix_synapse_additional_loggers_custom:
   - name: synapse.state.metrics
     level: DEBUG
+  - name: synapse.federation
+    level: INFO
+  - name: synapse.http.federation
+    level: INFO
+  - name: synapse.http.client
+    level: INFO
 
 ## Element
 matrix_server_fqn_element: chat.alpaka.social
