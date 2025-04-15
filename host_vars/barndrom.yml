@@ -35,8 +35,6 @@ matrix_domain: alpaka.social
 matrix_homeserver_implementation: synapse
 matrix_homeserver_generic_secret_key: "{{ matrix_synapse_macaroon_secret_key }}"
 
-traefik_config_certificatesResolvers_acme_email: "service@alpaka.network"
-
 postgres_connection_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37616138623639346239303430623362623562376138383462383165383936633965313966353132
